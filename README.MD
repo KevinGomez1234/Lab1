@@ -1,5 +1,3 @@
-#Lab1
-
 # lab1
 Time and Forking Children
 
