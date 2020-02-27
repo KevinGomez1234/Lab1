@@ -16,7 +16,8 @@ int main(void)
 void logic()
 {
 	long time_start, time_end;
-	int status;
+	int status = 0;
+	//tms has all of the variables we need to report process times, returns tics 
 	struct tms t;
 	int ticsPerSecond = sysconf(_SC_CLK_TCK);
 	//start of the program 
@@ -27,7 +28,6 @@ void logic()
 	//we are the child process, print information
 	if((int)pid == 0)
 	{
-		sleep(5);
 		printProcessInformation((int)pid, status);
 		exit(0);
 	}
@@ -42,15 +42,15 @@ void logic()
 		printf("USER: %f, SYS: %f \n", (double)t.tms_utime / (double)ticsPerSecond, (double)t.tms_stime);
 		printf("CUSER: %f, CSYS: %f \n", (double)t.tms_cutime / (double)ticsPerSecond, (double)t.tms_cstime / (double)ticsPerSecond);
 	}
-	//print process time user, system, user time of children, and system time of children.
+	//end time 
 	time_end = time(NULL); 
 	printf("STOP: %li\n", time_end);
 }
 
 void printProcessInformation(int pid, int status)
 {
-	//succesful exit and print information of children
-	if (pid != 0 && WIFEXITED(status))
+	//we are the parent print the exit status and cpid
+	if (pid != 0)
 	{
 		int returned = WEXITSTATUS(status);
 		printf("PPID: %d, PID: %d, CPID: %d, RETVAL: %d \n", getppid(), getpid(), pid, returned);
