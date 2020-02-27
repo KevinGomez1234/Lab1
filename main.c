@@ -27,6 +27,7 @@ void logic()
 	//we are the child process, print information
 	if((int)pid == 0)
 	{
+		sleep(5);
 		printProcessInformation((int)pid, status);
 		exit(0);
 	}
